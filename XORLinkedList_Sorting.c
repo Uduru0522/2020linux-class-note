@@ -13,17 +13,24 @@ list *sort(list *start)
     for (list *merge = NULL; left || right;) {
         if (!right || (left && left->data < right->data)) {
             list *next = left->addr;
+            /*A(head)  B  C*/
+            // if next exists, put the address of C in B->addr
             if (next)
                 next->addr = XOR(left, next->addr);
 
+            // first node
             if (!merge) {
                 start = merge = left;
                 merge->addr = NULL;
-            } else {
+            }else {
+                // put Xor(address of merge's prev, left) in merge->addr
                 merge->addr = LL1;
+                // put merge in left->addr, become left's prev
                 left->addr = LL2;
+                // merge keep as the tail of list
                 merge = left;
             }
+            //left = left->next
             left = next;
         } else {
             list *next = right->addr;
